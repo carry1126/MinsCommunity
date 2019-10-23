@@ -30,5 +30,6 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'javax.servlet:jstl'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'		
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'	
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'	
 }

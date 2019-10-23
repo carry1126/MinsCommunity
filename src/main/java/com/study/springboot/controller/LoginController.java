@@ -1,6 +1,7 @@
 package com.study.springboot.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.study.springboot.service.BoardService;
 import com.study.springboot.service.LoginService;
 
 @Controller
@@ -22,6 +24,8 @@ public class LoginController {
 	
 	@Autowired
 	private LoginService loginService;
+	@Autowired
+	private BoardService boardService;
 	
 	static Logger log = LogManager.getLogger();
 	
@@ -48,7 +52,13 @@ public class LoginController {
 		  if(result.isEmpty()) {
 			  mv.setViewName("login");
 		  }else {
-			  mv.addObject("id", result.get("id"));
+			  //글 목록 가져오기
+			  String user= result.get("id");
+			  List<Map<String, Object>> writeList = boardService.writeList(user);
+			  mv.addObject("id", user);
+			  if(!writeList.isEmpty()) {
+				  mv.addObject("list", writeList);
+			  }
 		  }
 		  
 		  return mv;
