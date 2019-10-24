@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.study.springboot.service.BoardService;
 import com.study.springboot.service.LoginService;
 
@@ -27,12 +26,17 @@ public class LoginController {
 	@Autowired
 	private BoardService boardService;
 	
-	static Logger log = LogManager.getLogger();
+	//static Logger log = LogManager.getLogger();
 	
 	//@RquestMapping("/") redirect 사용시 문제발생!
 	@RequestMapping("/login")
 	public String loginPage() throws Exception{
 		return "/login";	
+	}
+	
+	@RequestMapping("/logout")
+	public String logoutPage() throws Exception{
+		return "redirect:/login";
 	}
 	
 	@RequestMapping(value="/loginValidate", method=RequestMethod.POST)
@@ -64,9 +68,5 @@ public class LoginController {
 		  return mv;
 	}
 
-	@RequestMapping("/list")
-	public String listPage(Model model) throws Exception{
-		model.addAttribute("id", "m001");
-		return "/list";
-	}
+
 }

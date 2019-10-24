@@ -1,5 +1,6 @@
 package com.study.springboot.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,13 @@ public class BoardServiceImpl implements BoardService{
 	public List<Map<String, Object>> writeList(String user) throws Exception{
 		
 		List<Map<String, Object>> result = boardDao.writeList(user);
+		return result;
+	}
+
+	@Override
+	public HashMap<String, Object> writeDetail(String idx) throws Exception {
+		
+		HashMap<String, Object> result = boardDao.writeDetail(idx);
 		return result;
 	}
 

@@ -11,4 +11,12 @@
 			    WHERE writer = #{writer}
 		]]>
 	</select>
+	
+	<select id="writeDetail" parameterType="string" resultType="hashmap">
+		<![CDATA[
+				SELECT * 
+				  FROM board
+				WHERE idx = #{idx}		
+		]]>
+	</select>
 </mapper>
