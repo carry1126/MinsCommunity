@@ -32,4 +32,5 @@ dependencies {
     implementation 'javax.servlet:jstl'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'	
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'	
+    implementation 'org.codehaus.janino:janino:3.0.12'
 }
