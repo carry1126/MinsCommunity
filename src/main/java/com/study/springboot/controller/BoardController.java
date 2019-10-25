@@ -1,6 +1,7 @@
 package com.study.springboot.controller;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,9 +35,13 @@ public class BoardController {
 		//logger.info("idx : " + idx);
 		log.info("idx : " + idx);
 		log.info("mode : " + mode);
-		HashMap<String, Object> result = boardService.writeDetail(idx);
+		Map<String, Object> result = new HashMap<>();
 		result.put("mode", mode);
-		log.info("result : " + result);
+		if(idx != null) {
+			result = boardService.writeDetail(idx); 
+			result.put("mode", mode);
+			log.info("result : " + result);
+		}
 		model.addAttribute("writeInfo", result);
 		return "/writeDetail";
 	}

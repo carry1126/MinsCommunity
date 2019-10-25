@@ -9,7 +9,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 	jQuery(document).ready(function(){
-
+		jQuery("#write").click(function(){
+			window.location.href="/writeDetail?mode=N";
+		});
 	});
 </script>
 </head>

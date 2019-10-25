@@ -35,11 +35,7 @@ public class LoginController {
 		if(req.getSession().getAttribute("loginInfo") != null) {
 			//로그인 되었을때 로그인 정보 가져오는 것 처리!
 			String id = (String) req.getSession().getAttribute("id");
-			List<Map<String, Object>> writeList = boardService.writeList(id);
-			if(!writeList.isEmpty()) {
-			  mv.addObject("id", id);
-			  mv.addObject("list", writeList);
-			}			
+			getListInfo(mv, id);			
 			msg= "이미 로그인된 상태입니다.";
 			mv.addObject("msg", msg);
 			mv.setViewName("list");
@@ -50,6 +46,7 @@ public class LoginController {
 		}
 		return mv;	
 	}
+
 	
 	@RequestMapping("/logout")
 	public ModelAndView logoutPage(HttpServletRequest req) throws Exception{
@@ -83,15 +80,18 @@ public class LoginController {
 			  mv.addObject("msg", "로그인에 성공했습니다.");
 			  //글 목록 가져오기
 			  String user= result.get("id");
-			  List<Map<String, Object>> writeList = boardService.writeList(user);
-			  if(!writeList.isEmpty()) {
-				  mv.addObject("id", user);
-				  mv.addObject("list", writeList);
-			  }
+			  getListInfo(mv, user);
 		  }
 		  
 		  return mv;
 	}
 
+	private void getListInfo(ModelAndView mv, String id) throws Exception {
+		List<Map<String, Object>> writeList = boardService.writeList(id);
+		if(!writeList.isEmpty()) {
+			mv.addObject("id", id);
+			mv.addObject("list", writeList);
+		}
+	}
 
 }

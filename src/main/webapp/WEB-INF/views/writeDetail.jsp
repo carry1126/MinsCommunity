@@ -9,7 +9,9 @@
 </head>
 <body>
 <c:set var="detail" value="${writeInfo}" />
-<c:if test="${detail.mode eq 'M'}" >
+<c:set var="mode" value="${detail.mode}" />
+<c:choose>
+<c:when test="${mode eq 'M'}">
 <form align="center">
 <table align="center">
 	<input type="hidden" value="${detail.IDX}" name="idx" />
@@ -32,6 +34,30 @@
 </table>
 <div><input type="button" value="수정"/><input type="button" value="목록"/></div>
 </form>
-</c:if>
+</c:when>
+<c:otherwise>
+<form align="center">
+<table align="center">
+	<tr>
+		<td>제목</td>
+		<td><input type="text" name="subject" /></td>
+	</tr>
+	<tr>
+		<td>작성자</td>
+		<td><input type="text" name="writer" /></td>
+	</tr>
+	<tr>
+		<td>등록시간</td>
+		<td><input type="text" name="reg_date" /></td>
+	</tr>
+	<tr>
+		<td>내용</td>
+		<td><input type="text" name="content" /></td>
+	</tr>		
+</table>
+<div><input type="button" value="등록"/><input type="button" value="목록"/></div>
+</form>
+</c:otherwise>
+</c:choose>
 </body>
 </html>
