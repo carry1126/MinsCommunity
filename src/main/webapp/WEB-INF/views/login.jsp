@@ -5,12 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
-
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 	jQuery(document).ready(function($){
 			console.log("jQuery 사용");
-			
+			window.alert("${msg}");
 			jQuery("#login").click(function(){
 					console.log("로그인 버튼 클릭");
 					var id = jQuery("#id").val();
