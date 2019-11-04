@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.study.springboot.dto.BoardDto;
 import com.study.springboot.service.BoardService;
 import com.study.springboot.service.LoginService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class LoginController {
 	
 	@Autowired
@@ -35,7 +39,12 @@ public class LoginController {
 		if(req.getSession().getAttribute("loginInfo") != null) {
 			//로그인 되었을때 로그인 정보 가져오는 것 처리!
 			String id = (String) req.getSession().getAttribute("id");
-			getListInfo(mv, id);			
+			//getListInfo(mv, id);
+			List<BoardDto> writeList = boardService.writeList(id);
+			if(!writeList.isEmpty()) {
+				mv.addObject("id", id);
+				mv.addObject("list", writeList);
+			}			
 			msg= "이미 로그인된 상태입니다.";
 			mv.addObject("msg", msg);
 			mv.setViewName("list");
@@ -62,7 +71,8 @@ public class LoginController {
 		
 		  String id = req.getParameter("id"); 
 		  String pw = req.getParameter("pw");
-		  
+		  log.info("loginValidate id : " + id);
+		  log.info("loginValidate pw : " + pw);
 		  Map<String, String> data = new HashMap<String, String>(); 
 		  data.put("id", id);
 		  data.put("pw", pw);
@@ -79,19 +89,24 @@ public class LoginController {
 			  req.getSession().setMaxInactiveInterval(60*30);
 			  mv.addObject("msg", "로그인에 성공했습니다.");
 			  //글 목록 가져오기
-			  String user= result.get("id");
-			  getListInfo(mv, user);
+			  //getListInfo(mv, user);
+			  try {
+				 List<BoardDto> writeList = boardService.writeList(id);
+				 if(!writeList.isEmpty()) {
+					mv.addObject("id", id);
+				 	mv.addObject("list", writeList);
+				 }
+			  }catch(Exception e) {
+				  e.printStackTrace();
+			  }
 		  }
 		  
 		  return mv;
 	}
 
+	//리팩토링 처리	
 	private void getListInfo(ModelAndView mv, String id) throws Exception {
-		List<Map<String, Object>> writeList = boardService.writeList(id);
-		if(!writeList.isEmpty()) {
-			mv.addObject("id", id);
-			mv.addObject("list", writeList);
-		}
+
 	}
 
 }

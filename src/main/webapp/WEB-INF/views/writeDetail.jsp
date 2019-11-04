@@ -6,33 +6,42 @@
 <head>
 <meta charset="UTF-8">
 <title>글 상세 페이지</title>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+	jQuery(document).ready(function(){		
+		jQuery("#register").click(function(){
+			jQuery('form').attr({action:'/registerInfo', method:'post'}).submit();
+		});
+	});
+</script>
 </head>
 <body>
 <c:set var="detail" value="${writeInfo}" />
+<c:set var="name" value="${detail.writer}" />
 <c:set var="mode" value="${detail.mode}" />
 <c:choose>
 <c:when test="${mode eq 'M'}">
-<form align="center">
+<form id="regInfo" align="center">
 <table align="center">
-	<input type="hidden" value="${detail.IDX}" name="idx" />
+	<input type="hidden" value="${detail.idx}" name="idx" />
 	<tr>
 		<td>제목</td>
-		<td><input type="text" value="${detail.SUBJECT}" name="subject" /></td>
+		<td><input type="text" value="${detail.subject}" name="subject" /></td>
 	</tr>
 	<tr>
 		<td>작성자</td>
-		<td><input type="text" value="${detail.WRITER}" name="writer" /></td>
+		<td><input type="text" value="${detail.writer}" name="writer" /></td>
 	</tr>
 	<tr>
 		<td>등록시간</td>
-		<td><input type="text" value="${detail.REG_DATE}" name="reg_date" /></td>
+		<td><input type="text" value="${detail.reg_date}" name="reg_date" /></td>
 	</tr>
 	<tr>
 		<td>내용</td>
-		<td><input type="text" value="${detail.CONTENT}" name="content" /></td>
+		<td><textarea name="content">${detail.content}</textarea></td>
 	</tr>		
 </table>
-<div><input type="button" value="수정"/><input type="button" value="목록"/></div>
+<div><input type="button" value="수정" id="modify" /><%-- <input type="button" value="목록" id="list" onClick="location.href='/list?id=${name}'" /> --%></div>
 </form>
 </c:when>
 <c:otherwise>
@@ -44,18 +53,14 @@
 	</tr>
 	<tr>
 		<td>작성자</td>
-		<td><input type="text" name="writer" /></td>
-	</tr>
-	<tr>
-		<td>등록시간</td>
-		<td><input type="text" name="reg_date" /></td>
+		<td><input type="text" value="${name}" name="writer" readonly /></td>
 	</tr>
 	<tr>
 		<td>내용</td>
-		<td><input type="text" name="content" /></td>
+		<td><textarea name="content">${detail.content}</textarea></td>
 	</tr>		
 </table>
-<div><input type="button" value="등록"/><input type="button" value="목록"/></div>
+<div><input type="button" value="등록" id="register" /><input type="button" value="목록" id="list"/></div>
 </form>
 </c:otherwise>
 </c:choose>

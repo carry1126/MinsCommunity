@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.study.springboot.dto.BoardDto;
+
 public interface BoardService {
 
-	List<Map<String, Object>> writeList(String user) throws Exception;
+	List<BoardDto> writeList(String user) throws Exception;
 
 	HashMap<String, Object> writeDetail(String idx) throws Exception;
+
+	int registerInfo(Map<String, Object> info) throws Exception;
 
 }

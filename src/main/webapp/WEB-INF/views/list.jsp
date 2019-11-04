@@ -9,9 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 	jQuery(document).ready(function(){
-		jQuery("#write").click(function(){
-			window.location.href="/writeDetail?mode=N";
-		});
+
 	});
 </script>
 </head>
@@ -21,7 +19,7 @@
 <div align="center">${name}님 어서 오세요</div><div align="right"><a href="/logout">로그아웃</a></div>
 <form align="center">
 <div align="right"><input type="text" size="40%"/><input type="button" id="search" value="검색" /></div>
-<div><input type="button" id="write" value="글쓰기"/><input type="button" id="delete" value="글삭제"></div>
+<div><input type="button" value="글쓰기" onclick="location.href='writeDetail?user=${name}&mode=N'"/><input type="button" id="delete" value="글삭제"/></div>
 <table align="center">
 	<tr>
 		<td><input type="checkbox" /></td>
@@ -30,11 +28,11 @@
 	</tr>
 	<c:if test="${not empty list}">
 	<c:forEach var="list" items="${list}">
-		<c:set var="idx" value="${list.IDX}" />
+		<c:set var="idx" value="${list.idx}" />
 		<tr>
 			<td><input type="checkbox" /></td>
 			<td>${idx}</td>
-			<td><a href="/writeDetail?idx=${idx}&mode=M">${list.SUBJECT}</a></td>
+			<td><a href="/writeDetail?idx=${idx}&mode=M">${list.subject}</a></td>
 		</tr>
 	</c:forEach>	
 	</c:if>

@@ -4,19 +4,34 @@
 			"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 			
 <mapper namespace="com.study.springboot.dao.IBoardDao">
-	<select id="writeList" parameterType="string" resultType="hashmap">
+	<resultMap id="BoardInfo" type="hashmap">
+			<result property="idx" column="IDX" />	
+			<result property="writer" column="WRITER" />	
+			<result property="subject" column="SUBJECT" />	
+			<result property="content" column="CONTENT" jdbcType="CLOB" javaType="java.lang.String"/>	
+			<result property="reg_date" column="REG_DATE" />	
+	</resultMap>
+	
+	<select id="writeList" parameterType="string" resultType="com.study.springboot.dto.BoardDto">
 		<![CDATA[
 				SELECT * 
 				  FROM board
 			    WHERE writer = #{writer}
-		]]>
+ 		]]>
 	</select>
 	
-	<select id="writeDetail" parameterType="string" resultType="hashmap">
+	<select id="writeDetail" parameterType="string" resultMap="BoardInfo">
 		<![CDATA[
 				SELECT * 
 				  FROM board
 				WHERE idx = #{idx}		
 		]]>
 	</select>
+	
+	<insert id="registerInfo" parameterType="hashmap">
+		<![CDATA[
+				INSERT INTO board
+				VALUES (SEQ_ID.NEXTVAL, #{writer}, #{title}, #{content}, SYSDATE)
+		]]>
+	</insert>
 </mapper>

@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.study.springboot.dao.IBoardDao;
+import com.study.springboot.dto.BoardDto;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -14,9 +16,9 @@ public class BoardServiceImpl implements BoardService{
 	private IBoardDao boardDao;
 
 	@Override
-	public List<Map<String, Object>> writeList(String user) throws Exception{
+	public List<BoardDto> writeList(String user) throws Exception{
 		
-		List<Map<String, Object>> result = boardDao.writeList(user);
+		List<BoardDto> result = boardDao.writeList(user);
 		return result;
 	}
 
@@ -24,6 +26,13 @@ public class BoardServiceImpl implements BoardService{
 	public HashMap<String, Object> writeDetail(String idx) throws Exception {
 		
 		HashMap<String, Object> result = boardDao.writeDetail(idx);
+		return result;
+	}
+
+	@Override
+	public int registerInfo(Map<String, Object> info) throws Exception {
+		
+		int result = boardDao.registerInfo(info);
 		return result;
 	}
 
