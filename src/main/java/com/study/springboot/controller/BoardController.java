@@ -106,4 +106,23 @@ public class BoardController {
 		return mv;
 	}
 	
+	//글삭제 2019.11.05 MJ
+	@RequestMapping(value="/deleteInfo", method=RequestMethod.GET)
+	public String deleteInfo(Model model, HttpServletRequest req) throws Exception {
+		String id = req.getParameter("id");
+		String delIdx = req.getParameter("delIdx");
+		log.info("삭제할 idx : " + delIdx);
+		String[] idxArr = delIdx.split("-");
+		HashMap hm = new HashMap();
+		hm.put("idxArr", idxArr);
+		int result = boardService.deleteInfo(hm);
+		log.info("삭제 건수 : " + result);
+		if(result > 0) {
+			List<BoardDto> list = boardService.writeList(id);
+			model.addAttribute("id", id);
+			model.addAttribute("list", list);			
+		}
+		return "list";
+	}
+	
 }

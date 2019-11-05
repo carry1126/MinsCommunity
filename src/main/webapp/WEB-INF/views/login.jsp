@@ -53,7 +53,8 @@
 			<td><input type="password" name="pw" id="pw"/></td>		
 		</tr>
 		<tr>
-			<td colspan="2">	<input type="button" value="로그인" id="login" /></td>
+			<td><input type="button" value="로그인" id="login" /></td>
+			<td><input type="button" value="회원가입" id="membership" /></td>
 		</tr>
 	</table>
 

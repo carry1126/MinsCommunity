@@ -43,4 +43,11 @@ public class BoardServiceImpl implements BoardService{
 		return result;
 	}
 
+	@Override
+	public int deleteInfo(HashMap idxArr) throws Exception {
+		
+		int result = boardDao.deleteInfo(idxArr);
+		return result;
+	}
+
 }

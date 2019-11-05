@@ -16,5 +16,6 @@ public interface IBoardDao {
 	HashMap<String, Object> writeDetail(@Param("idx") String idx) throws Exception;
 	int registerInfo(Map<String, Object> info) throws Exception;
 	int modifyInfo(Map<String, Object> info) throws Exception;
+	int deleteInfo(HashMap idxArr) throws Exception;
 
 }

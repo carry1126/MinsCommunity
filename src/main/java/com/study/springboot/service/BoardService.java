@@ -16,4 +16,6 @@ public interface BoardService {
 
 	int modifyInfo(Map<String, Object> info) throws Exception;
 
+	int deleteInfo(HashMap hm) throws Exception;
+
 }

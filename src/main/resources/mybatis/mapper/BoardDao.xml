@@ -45,4 +45,14 @@
 				WHERE idx = #{idx}
 		]]>
 	</update>
+	
+	<delete id="deleteInfo" parameterType="hashmap">
+		<![CDATA[
+				DELETE FROM board
+				WHERE idx IN 
+		]]>
+				<foreach collection="idxArr" item="type" index="index" open="(" separator="," close=")" >
+						 #{type}
+				</foreach>
+	</delete>
 </mapper>
