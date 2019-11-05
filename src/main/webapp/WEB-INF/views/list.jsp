@@ -75,11 +75,11 @@
 	<input type="hidden" name="id" value="${name}" />
 	<input type="hidden" name="delIdx" />
 	<c:if test="${not empty list}">
-	<c:forEach var="list" items="${list}">
+	<c:forEach var="list" items="${list}" varStatus="status">
 		<c:set var="idx" value="${list.idx}" />
 		<tr>
 			<td><input type="checkbox" name="rowCheck" value="${idx}" /></td>
-			<td>${idx}</td>
+			<td>${status.count}</td>
 			<td><a href="/writeDetail?user=${name}&idx=${idx}&mode=M">${list.subject}</a></td>
 		</tr>
 	</c:forEach>	
