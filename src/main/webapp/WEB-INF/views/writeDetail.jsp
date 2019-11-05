@@ -12,13 +12,17 @@
 		jQuery("#register").click(function(){
 			jQuery('form').attr({action:'/registerInfo', method:'post'}).submit();
 		});
+		
+		jQuery("#modify").click(function(){
+			jQuery('form').attr({action:'/modifyInfo', method:'post'}).submit();
+		});
 	});
 </script>
 </head>
 <body>
 <c:set var="detail" value="${writeInfo}" />
-<c:set var="name" value="${detail.writer}" />
-<c:set var="mode" value="${detail.mode}" />
+<c:set var="name" value="${user}" />
+<c:set var="mode" value="${mode}" />
 <c:choose>
 <c:when test="${mode eq 'M'}">
 <form id="regInfo" align="center">
@@ -30,18 +34,18 @@
 	</tr>
 	<tr>
 		<td>작성자</td>
-		<td><input type="text" value="${detail.writer}" name="writer" /></td>
+		<td><input type="text" value="${detail.writer}" name="writer" readonly /></td>
 	</tr>
 	<tr>
 		<td>등록시간</td>
-		<td><input type="text" value="${detail.reg_date}" name="reg_date" /></td>
+		<td><input type="text" value="${detail.reg_date}" name="reg_date" readonly /></td>
 	</tr>
 	<tr>
 		<td>내용</td>
 		<td><textarea name="content">${detail.content}</textarea></td>
 	</tr>		
 </table>
-<div><input type="button" value="수정" id="modify" /><%-- <input type="button" value="목록" id="list" onClick="location.href='/list?id=${name}'" /> --%></div>
+<div><input type="button" value="수정" id="modify" /><input type="button" value="목록" onclick="location.href='list?id=${name}'" /></div>
 </form>
 </c:when>
 <c:otherwise>
@@ -57,10 +61,10 @@
 	</tr>
 	<tr>
 		<td>내용</td>
-		<td><textarea name="content">${detail.content}</textarea></td>
+		<td><textarea name="content"></textarea></td>
 	</tr>		
 </table>
-<div><input type="button" value="등록" id="register" /><input type="button" value="목록" id="list"/></div>
+<div><input type="button" value="등록" id="register" /><input type="button" value="목록" onclick="location.href='list?id=${name}'"/></div>
 </form>
 </c:otherwise>
 </c:choose>

@@ -17,6 +17,7 @@
 				SELECT * 
 				  FROM board
 			    WHERE writer = #{writer}
+			    ORDER BY idx ASC
  		]]>
 	</select>
 	
@@ -34,4 +35,14 @@
 				VALUES (SEQ_ID.NEXTVAL, #{writer}, #{title}, #{content}, SYSDATE)
 		]]>
 	</insert>
+	
+	<update id="modifyInfo" parameterType="hashmap">
+		<![CDATA[
+				UPDATE board SET
+					subject = #{subject},
+					content = #{content},
+					reg_date = SYSDATE 
+				WHERE idx = #{idx}
+		]]>
+	</update>
 </mapper>

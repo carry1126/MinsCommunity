@@ -36,4 +36,11 @@ public class BoardServiceImpl implements BoardService{
 		return result;
 	}
 
+	@Override
+	public int modifyInfo(Map<String, Object> info) throws Exception {
+		
+		int result = boardDao.modifyInfo(info);
+		return result;
+	}
+
 }

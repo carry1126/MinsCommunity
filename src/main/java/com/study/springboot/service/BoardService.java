@@ -14,4 +14,6 @@ public interface BoardService {
 
 	int registerInfo(Map<String, Object> info) throws Exception;
 
+	int modifyInfo(Map<String, Object> info) throws Exception;
+
 }

@@ -32,7 +32,7 @@
 		<tr>
 			<td><input type="checkbox" /></td>
 			<td>${idx}</td>
-			<td><a href="/writeDetail?idx=${idx}&mode=M">${list.subject}</a></td>
+			<td><a href="/writeDetail?user=${name}&idx=${idx}&mode=M">${list.subject}</a></td>
 		</tr>
 	</c:forEach>	
 	</c:if>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.study.springboot.dto.BoardDto;
@@ -36,25 +37,23 @@ public class BoardController {
 	
 	@RequestMapping("/writeDetail")
 	public String writeDetail(Model model, HttpServletRequest req) throws Exception{
-		String name = req.getParameter("user");
+		String user = req.getParameter("user");
 		String idx = req.getParameter("idx");
 		String mode = req.getParameter("mode");
 		//logger.info("idx : " + idx);
-		log.info("name : " + name);
+		log.info("user : " + user);
 		log.info("idx : " + idx);
 		log.info("mode : " + mode);
 		Map<String, Object> result = new HashMap<>();
-		result.put("mode", mode);
-		if(idx != null) {
+		model.addAttribute("mode", mode);
+		model.addAttribute("user", user);
+		if(mode.equals("M")) {
 			result = boardService.writeDetail(idx); 
-			result.put("mode", mode);
-			result.put("writer", name);
+			model.addAttribute("writeInfo", result);
 			log.info("result : " + result);
-		}else {
-			result.put("writer", name);
 		}
-		model.addAttribute("writeInfo", result);
-		return "/writeDetail";
+		
+		return "writeDetail";
 	}
 	
 	@RequestMapping("/registerInfo")
@@ -72,19 +71,39 @@ public class BoardController {
 		int result = boardService.registerInfo(info);
 		ModelAndView mv = new ModelAndView("list");
 		if(result == 1) {
-			//getListInfo(mv, writer);
+			List<BoardDto> writeList = boardService.writeList(writer);
+			if(!writeList.isEmpty()) {
+				mv.addObject("id", writer);
+				mv.addObject("list", writeList);
+			}			
 		}
-		
 		//사용자 id확인
 		return mv;
 	}
 	
-	//리팩토링 처리
-	private void getListInfo(ModelAndView mv, String id) throws Exception {
-		List<BoardDto> writeList = boardService.writeList(id);
-		if(!writeList.isEmpty()) {
-			mv.addObject("id", id);
-			mv.addObject("list", writeList);
+	//글수정 2019.11.05 MJ
+	@RequestMapping(value="/modifyInfo", method=RequestMethod.POST)
+	public ModelAndView modifyInfo(HttpServletRequest req) throws Exception {
+		int idx = Integer.parseInt(req.getParameter("idx"));
+		String subject = req.getParameter("subject");
+		String writer = req.getParameter("writer");
+		String content = req.getParameter("content");
+		
+		Map<String, Object> info = new HashMap<String, Object>();
+		info.put("idx", idx);
+		info.put("subject", subject);
+		info.put("content", content);
+		int result = boardService.modifyInfo(info);
+		ModelAndView mv = new ModelAndView("list");
+		if(result > 0) {
+			List<BoardDto> writeList = boardService.writeList(writer);
+			if(!writeList.isEmpty()) {
+				mv.addObject("id", writer);
+				mv.addObject("list", writeList);
+			}			
 		}
-	}	
+		
+		return mv;
+	}
+	
 }
