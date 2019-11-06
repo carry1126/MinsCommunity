@@ -11,10 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.study.springboot.dto.BoardDto;
 import com.study.springboot.service.BoardService;
+import com.study.springboot.util.Pagination;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,12 +28,26 @@ public class BoardController {
 	private BoardService boardService;
 
 	//private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	//페이징 처리 2019.11.06 MJ
 	@RequestMapping("/list")
-	public String listPage(Model model, HttpServletRequest req) throws Exception{
-		String id = req.getParameter("id");
-		List<BoardDto> list = boardService.writeList(id);
-		model.addAttribute("id", id);
-		model.addAttribute("list", list);
+	public String listPage(@RequestParam String id, @RequestParam(defaultValue="1") int curPage, Model model) throws Exception{
+		//List<BoardDto> list = boardService.writeList(id);
+		  //전체 글개수 구하기
+		  int listCnt = boardService.selectWriteListCnt();
+		  Pagination pagination = new Pagination(listCnt, curPage);
+		  int startIndex = pagination.getStartIndex() + 1;
+		  int endIndex = startIndex + pagination.getPageSize() -1;				  
+		  model.addAttribute("pagination", pagination);
+		  //getListInfo(mv, id);
+		  Map hm = new HashMap();
+		  hm.put("id", id);
+		  hm.put("startIndex", startIndex);
+		  hm.put("endIndex", endIndex);		  
+		 List<BoardDto> writeList = boardService.writeListPage(hm);
+		if(!writeList.isEmpty()) {
+			model.addAttribute("id", id);
+			model.addAttribute("list", writeList);
+		}		
 		return "list";
 	}
 	

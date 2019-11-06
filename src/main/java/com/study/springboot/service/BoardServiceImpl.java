@@ -50,4 +50,18 @@ public class BoardServiceImpl implements BoardService{
 		return result;
 	}
 
+	@Override
+	public int selectWriteListCnt() throws Exception {
+		
+		int result = boardDao.selectWriteListCnt();
+		return result;
+	}
+
+	@Override
+	public List<BoardDto> writeListPage(Map hm) throws Exception {
+		
+		List<BoardDto> result = boardDao.writeListPage(hm);
+		return result;
+	}
+
 }

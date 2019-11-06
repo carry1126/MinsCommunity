@@ -21,6 +21,28 @@
  		]]>
 	</select>
 	
+	<select id="writeListPage" parameterType="hashmap" resultType="com.study.springboot.dto.BoardDto">
+		<![CDATA[
+				SELECT B.rnum, B.idx, B.writer, B.subject, B.content, B.reg_date
+				FROM
+				    (SELECT  /*+index_desc(A idx_rnum)*/ rownum as rnum, A.idx, A.writer, A.subject, A.content, A.reg_date
+				    FROM (
+				            SELECT idx, writer, subject, content, reg_date
+				            FROM board
+				            ORDER BY idx ASC) A
+				    WHERE writer = #{id}
+				        AND  rownum <= #{endIndex}) B
+				WHERE B.rnum >= #{startIndex}	    
+ 		]]>
+	</select>	
+	
+	<select id="selectWriteListCnt" resultType="int">
+		<![CDATA[
+				SELECT COUNT(*) 
+				  FROM board			
+		]]>
+	</select>
+	
 	<select id="writeDetail" parameterType="string" resultMap="BoardInfo">
 		<![CDATA[
 				SELECT * 

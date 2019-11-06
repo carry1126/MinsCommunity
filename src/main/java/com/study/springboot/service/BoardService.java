@@ -8,7 +8,9 @@ import com.study.springboot.dto.BoardDto;
 
 public interface BoardService {
 
-	List<BoardDto> writeList(String user) throws Exception;
+	List<BoardDto> writeList(String idx) throws Exception;
+
+	List<BoardDto> writeListPage(Map hm) throws Exception;
 
 	HashMap<String, Object> writeDetail(String idx) throws Exception;
 
@@ -17,5 +19,8 @@ public interface BoardService {
 	int modifyInfo(Map<String, Object> info) throws Exception;
 
 	int deleteInfo(HashMap hm) throws Exception;
+
+	int selectWriteListCnt() throws Exception;
+
 
 }

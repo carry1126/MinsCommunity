@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.study.springboot.dto.BoardDto;
 import com.study.springboot.service.BoardService;
 import com.study.springboot.service.LoginService;
+import com.study.springboot.util.Pagination;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,14 +35,25 @@ public class LoginController {
 	
 	//@RquestMapping("/") redirect 사용시 문제발생!
 	@RequestMapping("/login")
-	public ModelAndView loginPage(HttpServletRequest req, HttpServletResponse res) throws Exception{
+	public ModelAndView loginPage(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req, HttpServletResponse res) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		String msg = "";
 		if(req.getSession().getAttribute("loginInfo") != null) {
 			//로그인 되었을때 로그인 정보 가져오는 것 처리!
 			String id = (String) req.getSession().getAttribute("id");
+			//전체 글개수 구하기
+			int listCnt = boardService.selectWriteListCnt();
+			Pagination pagination = new Pagination(listCnt, curPage);
+			int startIndex = pagination.getStartIndex() + 1;
+			int endIndex = startIndex + pagination.getPageSize() -1;				
+			mv.addObject("pagination", pagination);
 			//getListInfo(mv, id);
-			List<BoardDto> writeList = boardService.writeList(id);
+			HashMap hm = new HashMap();
+			hm.put("id", id);
+			hm.put("startIndex", startIndex);
+			hm.put("endIndex", endIndex);
+//			List<BoardDto> writeList = boardService.writeList(id);
+			List<BoardDto> writeList = boardService.writeListPage(hm);
 			if(!writeList.isEmpty()) {
 				mv.addObject("id", id);
 				mv.addObject("list", writeList);
@@ -67,7 +80,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/loginValidate", method=RequestMethod.POST)
 	@ResponseBody
-	public ModelAndView loginValidate(HttpServletRequest req) throws Exception{
+	public ModelAndView loginValidate(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req) throws Exception{
 		
 		  String id = req.getParameter("id"); 
 		  String pw = req.getParameter("pw");
@@ -78,7 +91,7 @@ public class LoginController {
 		  data.put("pw", pw);
 		  
 		  HashMap<String, String> result = loginService.validateLogin(data);
-		  
+		 
 		  ModelAndView mv = new ModelAndView("list");
 		  if(result.isEmpty()) {
 			  mv.addObject("msg", "로그인에 실패하였습니다.");
@@ -91,7 +104,18 @@ public class LoginController {
 			  //글 목록 가져오기
 			  //getListInfo(mv, user);
 			  try {
-				 List<BoardDto> writeList = boardService.writeList(id);
+				  //전체 글개수 구하기
+				  int listCnt = boardService.selectWriteListCnt();
+				  Pagination pagination = new Pagination(listCnt, curPage);
+				  int startIndex = pagination.getStartIndex() + 1;
+				  int endIndex = startIndex + pagination.getPageSize() -1;				  
+				  mv.addObject("pagination", pagination);
+				  //getListInfo(mv, id);
+				  HashMap hm = new HashMap();
+				  hm.put("id", id);
+				  hm.put("startIndex", startIndex);
+				  hm.put("endIndex", endIndex);		  
+				 List<BoardDto> writeList = boardService.writeListPage(hm);
 				 if(!writeList.isEmpty()) {
 					mv.addObject("id", id);
 				 	mv.addObject("list", writeList);
@@ -100,13 +124,6 @@ public class LoginController {
 				  e.printStackTrace();
 			  }
 		  }
-		  
 		  return mv;
 	}
-
-	//리팩토링 처리	
-	private void getListInfo(ModelAndView mv, String id) throws Exception {
-
-	}
-
 }

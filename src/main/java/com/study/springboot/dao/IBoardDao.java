@@ -13,9 +13,11 @@ import com.study.springboot.dto.BoardDto;
 public interface IBoardDao {
 
 	List<BoardDto> writeList(@Param("writer") String user) throws Exception;
+	List<BoardDto> writeListPage(Map hm) throws Exception;
 	HashMap<String, Object> writeDetail(@Param("idx") String idx) throws Exception;
 	int registerInfo(Map<String, Object> info) throws Exception;
 	int modifyInfo(Map<String, Object> info) throws Exception;
 	int deleteInfo(HashMap idxArr) throws Exception;
+	int selectWriteListCnt() throws Exception;
 
 }
