@@ -31,19 +31,18 @@ public class BoardController {
 	//페이징 처리 2019.11.06 MJ
 	@RequestMapping("/list")
 	public String listPage(@RequestParam String id, @RequestParam(defaultValue="1") int curPage, Model model) throws Exception{
-		//List<BoardDto> list = boardService.writeList(id);
-		  //전체 글개수 구하기
-		  int listCnt = boardService.selectWriteListCnt();
-		  Pagination pagination = new Pagination(listCnt, curPage);
-		  int startIndex = pagination.getStartIndex() + 1;
-		  int endIndex = startIndex + pagination.getPageSize() -1;				  
-		  model.addAttribute("pagination", pagination);
-		  //getListInfo(mv, id);
-		  Map hm = new HashMap();
-		  hm.put("id", id);
-		  hm.put("startIndex", startIndex);
-		  hm.put("endIndex", endIndex);		  
-		 List<BoardDto> writeList = boardService.writeListPage(hm);
+		//전체 글개수 구하기
+		int listCnt = boardService.selectWriteListCnt(id);
+		Pagination pagination = new Pagination(listCnt, curPage);
+		int startIndex = pagination.getStartIndex() + 1;
+		int endIndex = startIndex + pagination.getPageSize() -1;				  
+		model.addAttribute("pagination", pagination);
+		//getListInfo(mv, id);
+		Map hm = new HashMap();
+		hm.put("id", id);
+		hm.put("startIndex", startIndex);
+		hm.put("endIndex", endIndex);		  
+		List<BoardDto> writeList = boardService.writeListPage(hm);
 		if(!writeList.isEmpty()) {
 			model.addAttribute("id", id);
 			model.addAttribute("list", writeList);
@@ -73,7 +72,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/registerInfo")
-	public ModelAndView registerInfo(HttpServletRequest req) throws Exception{
+	public ModelAndView registerInfo(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req) throws Exception{
 
 		String title = req.getParameter("subject");
 		String writer = req.getParameter("writer");
@@ -87,7 +86,17 @@ public class BoardController {
 		int result = boardService.registerInfo(info);
 		ModelAndView mv = new ModelAndView("list");
 		if(result == 1) {
-			List<BoardDto> writeList = boardService.writeList(writer);
+			//전체 글개수 구하기
+			int listCnt = boardService.selectWriteListCnt(writer);
+			Pagination pagination = new Pagination(listCnt, curPage);
+			int startIndex = pagination.getStartIndex() + 1;
+			int endIndex = startIndex + pagination.getPageSize() -1;				  
+			mv.addObject("pagination", pagination);
+			Map hm = new HashMap();
+			hm.put("id", writer);
+			hm.put("startIndex", startIndex);
+			hm.put("endIndex", endIndex);		  
+			List<BoardDto> writeList = boardService.writeListPage(hm);			
 			if(!writeList.isEmpty()) {
 				mv.addObject("id", writer);
 				mv.addObject("list", writeList);
@@ -99,7 +108,7 @@ public class BoardController {
 	
 	//글수정 2019.11.05 MJ
 	@RequestMapping(value="/modifyInfo", method=RequestMethod.POST)
-	public ModelAndView modifyInfo(HttpServletRequest req) throws Exception {
+	public ModelAndView modifyInfo(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req) throws Exception {
 		int idx = Integer.parseInt(req.getParameter("idx"));
 		String subject = req.getParameter("subject");
 		String writer = req.getParameter("writer");
@@ -112,7 +121,16 @@ public class BoardController {
 		int result = boardService.modifyInfo(info);
 		ModelAndView mv = new ModelAndView("list");
 		if(result > 0) {
-			List<BoardDto> writeList = boardService.writeList(writer);
+			int listCnt = boardService.selectWriteListCnt(writer);
+			Pagination pagination = new Pagination(listCnt, curPage);
+			int startIndex = pagination.getStartIndex() + 1;
+			int endIndex = startIndex + pagination.getPageSize() -1;				  
+			mv.addObject("pagination", pagination);
+			Map hm = new HashMap();
+			hm.put("id", writer);
+			hm.put("startIndex", startIndex);
+			hm.put("endIndex", endIndex);	
+			List<BoardDto> writeList = boardService.writeListPage(hm);	
 			if(!writeList.isEmpty()) {
 				mv.addObject("id", writer);
 				mv.addObject("list", writeList);
@@ -124,19 +142,28 @@ public class BoardController {
 	
 	//글삭제 2019.11.05 MJ
 	@RequestMapping(value="/deleteInfo", method=RequestMethod.GET)
-	public String deleteInfo(Model model, HttpServletRequest req) throws Exception {
+	public String deleteInfo(@RequestParam(defaultValue="1") int curPage, Model model, HttpServletRequest req) throws Exception {
 		String id = req.getParameter("id");
 		String delIdx = req.getParameter("delIdx");
 		log.info("삭제할 idx : " + delIdx);
 		String[] idxArr = delIdx.split("-");
-		HashMap hm = new HashMap();
-		hm.put("idxArr", idxArr);
-		int result = boardService.deleteInfo(hm);
+		HashMap hm1 = new HashMap();
+		hm1.put("idxArr", idxArr);
+		int result = boardService.deleteInfo(hm1);
 		log.info("삭제 건수 : " + result);
 		if(result > 0) {
-			List<BoardDto> list = boardService.writeList(id);
+			int listCnt = boardService.selectWriteListCnt(id);
+			Pagination pagination = new Pagination(listCnt, curPage);
+			int startIndex = pagination.getStartIndex() + 1;
+			int endIndex = startIndex + pagination.getPageSize() -1;				  
+			model.addAttribute("pagination", pagination);
+			Map hm2 = new HashMap();
+			hm2.put("id", id);
+			hm2.put("startIndex", startIndex);
+			hm2.put("endIndex", endIndex);	
+			List<BoardDto> writeList = boardService.writeListPage(hm2);	
 			model.addAttribute("id", id);
-			model.addAttribute("list", list);			
+			model.addAttribute("list", writeList);			
 		}
 		return "list";
 	}

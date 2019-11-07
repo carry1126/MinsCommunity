@@ -18,6 +18,6 @@ public interface IBoardDao {
 	int registerInfo(Map<String, Object> info) throws Exception;
 	int modifyInfo(Map<String, Object> info) throws Exception;
 	int deleteInfo(HashMap idxArr) throws Exception;
-	int selectWriteListCnt() throws Exception;
+	int selectWriteListCnt(String string) throws Exception;
 
 }

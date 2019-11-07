@@ -51,9 +51,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int selectWriteListCnt() throws Exception {
+	public int selectWriteListCnt(String id) throws Exception {
 		
-		int result = boardDao.selectWriteListCnt();
+		int result = boardDao.selectWriteListCnt(id);
 		return result;
 	}
 

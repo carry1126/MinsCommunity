@@ -42,7 +42,7 @@ public class LoginController {
 			//로그인 되었을때 로그인 정보 가져오는 것 처리!
 			String id = (String) req.getSession().getAttribute("id");
 			//전체 글개수 구하기
-			int listCnt = boardService.selectWriteListCnt();
+			int listCnt = boardService.selectWriteListCnt(id);
 			Pagination pagination = new Pagination(listCnt, curPage);
 			int startIndex = pagination.getStartIndex() + 1;
 			int endIndex = startIndex + pagination.getPageSize() -1;				
@@ -105,7 +105,7 @@ public class LoginController {
 			  //getListInfo(mv, user);
 			  try {
 				  //전체 글개수 구하기
-				  int listCnt = boardService.selectWriteListCnt();
+				  int listCnt = boardService.selectWriteListCnt(id);
 				  Pagination pagination = new Pagination(listCnt, curPage);
 				  int startIndex = pagination.getStartIndex() + 1;
 				  int endIndex = startIndex + pagination.getPageSize() -1;				  

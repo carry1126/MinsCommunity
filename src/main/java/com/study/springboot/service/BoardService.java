@@ -20,7 +20,7 @@ public interface BoardService {
 
 	int deleteInfo(HashMap hm) throws Exception;
 
-	int selectWriteListCnt() throws Exception;
+	int selectWriteListCnt(String string) throws Exception;
 
 
 }

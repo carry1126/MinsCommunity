@@ -36,10 +36,11 @@
  		]]>
 	</select>	
 	
-	<select id="selectWriteListCnt" resultType="int">
+	<select id="selectWriteListCnt" parameterType="string" resultType="int">
 		<![CDATA[
 				SELECT COUNT(*) 
-				  FROM board			
+				  FROM board
+				WHERE writer=#{id}
 		]]>
 	</select>
 	
