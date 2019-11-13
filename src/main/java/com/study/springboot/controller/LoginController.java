@@ -2,13 +2,13 @@ package com.study.springboot.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,11 +31,16 @@ public class LoginController {
 	@Autowired
 	private BoardService boardService;
 	
-	//static Logger log = LogManager.getLogger();
 	
+	@RequestMapping("/memebership")
+	public String memPage() {
+		return "mem";
+	}
+	
+	//로그인화면
 	//@RquestMapping("/") redirect 사용시 문제발생!
 	@RequestMapping("/login")
-	public ModelAndView loginPage(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req, HttpServletResponse res) throws Exception{
+	public ModelAndView loginPage(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req) throws Exception{
 		ModelAndView mv = new ModelAndView();
 		String msg = "";
 		if(req.getSession().getAttribute("loginInfo") != null) {
@@ -47,12 +52,10 @@ public class LoginController {
 			int startIndex = pagination.getStartIndex() + 1;
 			int endIndex = startIndex + pagination.getPageSize() -1;				
 			mv.addObject("pagination", pagination);
-			//getListInfo(mv, id);
 			HashMap hm = new HashMap();
 			hm.put("id", id);
 			hm.put("startIndex", startIndex);
 			hm.put("endIndex", endIndex);
-//			List<BoardDto> writeList = boardService.writeList(id);
 			List<BoardDto> writeList = boardService.writeListPage(hm);
 			if(!writeList.isEmpty()) {
 				mv.addObject("id", id);
@@ -69,7 +72,7 @@ public class LoginController {
 		return mv;	
 	}
 
-	
+	//로그아웃
 	@RequestMapping("/logout")
 	public ModelAndView logoutPage(HttpServletRequest req) throws Exception{
 		req.getSession().removeAttribute("loginInfo");
@@ -78,6 +81,7 @@ public class LoginController {
 		return mv;
 	}
 	
+	//로그인계정검증
 	@RequestMapping(value="/loginValidate", method=RequestMethod.POST)
 	@ResponseBody
 	public ModelAndView loginValidate(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req) throws Exception{
@@ -86,7 +90,7 @@ public class LoginController {
 		  String pw = req.getParameter("pw");
 		  log.info("loginValidate id : " + id);
 		  log.info("loginValidate pw : " + pw);
-		  Map<String, String> data = new HashMap<String, String>(); 
+		  HashMap<String, String> data = new HashMap<String, String>(); 
 		  data.put("id", id);
 		  data.put("pw", pw);
 		  
@@ -101,8 +105,7 @@ public class LoginController {
 			  req.getSession().setAttribute("id", id);
 			  req.getSession().setMaxInactiveInterval(60*30);
 			  mv.addObject("msg", "로그인에 성공했습니다.");
-			  //글 목록 가져오기
-			  //getListInfo(mv, user);
+
 			  try {
 				  //전체 글개수 구하기
 				  int listCnt = boardService.selectWriteListCnt(id);
@@ -110,7 +113,6 @@ public class LoginController {
 				  int startIndex = pagination.getStartIndex() + 1;
 				  int endIndex = startIndex + pagination.getPageSize() -1;				  
 				  mv.addObject("pagination", pagination);
-				  //getListInfo(mv, id);
 				  HashMap hm = new HashMap();
 				  hm.put("id", id);
 				  hm.put("startIndex", startIndex);

@@ -16,7 +16,7 @@ public class LoginServiceImpl implements LoginService {
 	private IMemberDao memDao;
 	
 	@Override
-	public HashMap validateLogin(Map<String, String> data	) {
+	public HashMap validateLogin(HashMap<String, String> data	) {
 		MemberDto result = memDao.validateLogin(data);
 		HashMap<String, String> mem = new HashMap<>();
 		

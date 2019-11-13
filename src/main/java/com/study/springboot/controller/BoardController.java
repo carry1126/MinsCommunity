@@ -27,7 +27,8 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	//private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	//	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	//글목록
 	//페이징 처리 2019.11.06 MJ
 	@RequestMapping("/list")
 	public String listPage(@RequestParam String id, @RequestParam(defaultValue="1") int curPage, Model model) throws Exception{
@@ -50,12 +51,12 @@ public class BoardController {
 		return "list";
 	}
 	
+	//글상세
 	@RequestMapping("/writeDetail")
 	public String writeDetail(Model model, HttpServletRequest req) throws Exception{
 		String user = req.getParameter("user");
 		String idx = req.getParameter("idx");
 		String mode = req.getParameter("mode");
-		//logger.info("idx : " + idx);
 		log.info("user : " + user);
 		log.info("idx : " + idx);
 		log.info("mode : " + mode);
@@ -71,6 +72,7 @@ public class BoardController {
 		return "writeDetail";
 	}
 	
+	//글등록
 	@RequestMapping("/registerInfo")
 	public ModelAndView registerInfo(@RequestParam(defaultValue="1") int curPage, HttpServletRequest req) throws Exception{
 

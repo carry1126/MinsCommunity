@@ -38,6 +38,10 @@
 */
 					
 			});
+			
+			jQuery("#membership").click(function(){
+				window.location.href="/memebership";
+			});
 	});
 </script>
 </head>
@@ -57,8 +61,6 @@
 			<td><input type="button" value="회원가입" id="membership" /></td>
 		</tr>
 	</table>
-
 </form>
-
 </body>
 </html>
