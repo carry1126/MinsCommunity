@@ -31,7 +31,7 @@
 				            FROM board
 				            ORDER BY idx ASC) A
 				    WHERE writer = #{id}
-				        AND  rownum <= #{endIndex}) B
+				        AND rownum <= #{endIndex}) B
 				WHERE B.rnum >= #{startIndex}	    
  		]]>
 	</select>	

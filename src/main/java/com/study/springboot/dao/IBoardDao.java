@@ -24,6 +24,6 @@ public interface IBoardDao {
 
 	int deleteInfo(HashMap idxArr) throws Exception;
 
-	int selectWriteListCnt(String string) throws Exception;
+	int selectWriteListCnt(String id) throws Exception;
 
 }
